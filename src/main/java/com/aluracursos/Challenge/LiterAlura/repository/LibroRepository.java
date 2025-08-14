@@ -1,0 +1,14 @@
+package com.aluracursos.Challenge.LiterAlura.repository;
+
+import com.aluracursos.Challenge.LiterAlura.model.Libro;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface LibroRepository extends JpaRepository<Libro, Long> {
+
+    @Query("SELECT l FROM Libro l WHERE l.idiomas ILIKE %:opcion2%")
+    List<Libro> findByIdioma(String Idioma);
+
+}
