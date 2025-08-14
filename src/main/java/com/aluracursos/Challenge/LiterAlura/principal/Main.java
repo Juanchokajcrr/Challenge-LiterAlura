@@ -53,23 +53,22 @@ public class Main {
                 continue;
             }
 
-
             switch (opcion) {
                 case 1:
                     buscarLibro();
                     break;
-//                case 2:
-//                    buscarEpisodioPorSerie();
-//                    break;
-//                case 3:
-//                    mostrarSeriesBuscadas();
-//                    break;
-//                case 4:
-//                    buscarSeriesPorTitulo();
-//                    break;
-//                case 5:
-//                    buscarTop5Series();
-//                    break;
+                case 2:
+                    listarLibrosRegistrados();
+                    break;
+                case 3:
+                    listarAutoresRegistrados();
+                    break;
+                case 4:
+                    listarAutorPorAno();
+                    break;
+                case 5:
+                    listarLibrosPorIdioma();
+                    break;
 
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -102,21 +101,124 @@ public class Main {
             System.out.println("""
                     libro[
                         titulo: %s
-                        author: %s
-                        lenguaje: %s
+                        autor: %s
+                        idiomas: %s
                         descargas: %s
                     ]
                     """.formatted(
-                            libro.getTitulo(),
-                            autor.getNombre(),
-                            libro.getIdiomas(),
-                            libro.getDescargas().toString()));
+                    libro.getTitulo(),
+                    autor.getNombre(),
+                    libro.getIdiomas(),
+                    libro.getDescargas().toString()));
 
             libroRepository.save(libro);
             autorRepository.save(autor);
 
         }catch (Exception e) {
             System.out.println("no se encontro ese libro");
+        }
+    }
+
+    // caso 2 listar libros registrados
+    private void listarLibrosRegistrados() {
+        libros = libroRepository.findAll();
+        libros.stream().forEach(l -> {
+            System.out.println("""
+                    libro[
+                        titulo: %s
+                        autor: %s
+                        idiomas: %s
+                        descargas: %s
+                    ]
+                    """.formatted(
+                    l.getTitulo(),
+                    l.getAutor(),
+                    l.getIdiomas(),
+                    l.getDescargas().toString()));
+        });
+    }
+
+    // caso 3 listar autores registrados
+    private void listarAutoresRegistrados(){
+        autores = autorRepository.findAll();
+        autores.stream().forEach(a -> {
+            System.out.println("""
+                    autor[
+                        nombre: %s
+                        naciminto: %s
+                        muerte: %s
+                    ]
+                    """.formatted(
+                            a.getNombre(),
+                    a.getNacimiento(),
+                    a.getMuerte()));
+        });
+    }
+
+    // caso 4 listar autores vivos en un determinado año
+    private void listarAutorPorAno() {
+        System.out.println("Escribe el año que deseas consultar");
+        var anoBusqueda = teclado.nextInt();
+        teclado.nextLine();
+
+        List<Autor> autores = autorRepository.autorPorFecha(anoBusqueda);
+        autores.forEach(a -> {
+            System.out.println("""
+                    autor[
+                        nombre: %s
+                        naciminto: %s
+                        muerte: %s
+                    ]
+                    """.formatted(
+                    a.getNombre(),
+                    a.getNacimiento().toString(),
+                    a.getMuerte().toString()));
+        });
+    }
+
+    // caso 5 listar libros por idioma
+    private void  listarLibrosPorIdioma() {
+        System.out.println("""
+                \n****************************************************************
+                    Selcciona el lenguaje de los libros que deseas consultar
+                ****************************************************************\n
+                1 - En (Ingles)
+                2 - Es (Español)
+                \n""");
+
+        try {
+            var opcion2 = teclado.nextInt();
+            teclado.nextLine();
+
+            switch (opcion2){
+                case 1:
+                    libros = libroRepository.findByIdioma("en");
+                    break;
+                case 2:
+                    libros = libroRepository.findByIdioma("es");
+                    break;
+                default:
+                    System.out.println("Opción inválida, por favor ingrese una opcion disponible");
+            }
+
+            libros.stream().forEach(l -> {
+                    System.out.println("""
+                    autor[
+                        titulo: %s
+                        autor: %s
+                        idiomas: %s
+                        descargas: %s
+                    ]
+                    """.formatted(
+                            l.getTitulo(),
+                            l.getAutor(),
+                            l.getIdiomas(),
+                            l.getDescargas().toString()));
+
+            });
+
+        }catch (Exception e) {
+            System.out.println("Por favor, ingrese un número válido.");
         }
     }
 }

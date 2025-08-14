@@ -2,6 +2,8 @@ package com.aluracursos.Challenge.LiterAlura.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "autores")
 
@@ -12,14 +14,17 @@ public class Autor {
     private long Id;
     @Column(unique = true)
     private String nombre;
-    private Integer Nacimiento;
-    private Integer Muerte;
+    private Integer nacimiento;
+    private Integer muerte;
+//    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany
+    private List<Libro> libros;
 
     public Autor (){}
     public Autor(DatosAutor datosAutor) {
         this.nombre = datosAutor.nombre();
-        this.Nacimiento = datosAutor.Nacimiento();
-        this.Muerte = datosAutor.Muerte();
+        this.nacimiento = datosAutor.nacimiento();
+        this.muerte = datosAutor.muerte();
     }
 
     @Override
@@ -27,8 +32,8 @@ public class Autor {
         return
                 "Id=" + Id +
                 ", nombre='" + nombre + '\'' +
-                ", añoNacimiento=" + Nacimiento +
-                ", añoMuerte=" + Muerte;
+                ", añoNacimiento=" + nacimiento +
+                ", añoMuerte=" + muerte;
     }
 
     public long getId() {
@@ -45,17 +50,24 @@ public class Autor {
         this.nombre = nombre;
     }
 
-    public Integer getAñoNacimiento() {
-        return Nacimiento;
+    public Integer getNacimiento() {
+        return nacimiento;
     }
-    public void setAñoNacimiento(Integer añoNacimiento) {
-        this.Nacimiento = añoNacimiento;
+    public void setNacimiento(Integer añoNacimiento) {
+        this.nacimiento = añoNacimiento;
     }
 
-    public Integer getAñoMuerte() {
-        return Muerte;
+    public Integer getMuerte() {
+        return muerte;
     }
-    public void setAñoMuerte(Integer añoMuerte) {
-        this.Muerte = añoMuerte;
+    public void setMuerte(Integer añoMuerte) {
+        this.muerte = añoMuerte;
     }
+
+//    public List<Libro> getLibros() {
+//        return libros;
+//    }
+//    public void setLibros(List<Libro> libros) {
+//        this.libros = libros;
+//    }
 }

@@ -15,6 +15,8 @@ public class Libro {
     private String autor;
     private String idiomas;
     private Integer descargas;
+    @ManyToOne
+    private Libro libro;
 
     public Libro(){}
     public Libro(DatosResultados datosLibro) {
@@ -67,5 +69,12 @@ public class Libro {
     }
     public void setDescargas(Integer descargas) {
         this.descargas = descargas;
+    }
+
+    public Libro getLibro() {
+        return libro;
+    }
+    public void setLibro(Libro libro) {
+        this.libro = libro;
     }
 }

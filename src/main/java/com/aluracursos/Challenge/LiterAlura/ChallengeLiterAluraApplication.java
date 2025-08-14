@@ -16,13 +16,13 @@ public class ChallengeLiterAluraApplication implements CommandLineRunner {
 	}
 
     @Autowired
-    private LibroRepository Repository;
+    private LibroRepository libroRepository;
     @Autowired
     private AutorRepository autorRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        Main main = new Main(Repository, autorRepository);
+        Main main = new Main(libroRepository, autorRepository);
         main.muestraElMenu();
     }
 }
